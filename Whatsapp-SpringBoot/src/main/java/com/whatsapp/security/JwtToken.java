@@ -31,11 +31,14 @@ public class JwtToken {
 	
 	public boolean isValidToken(String token)
 	{
+		System.out.println("tek "+token);
+		
 		try
 		{
 			Jwts.parser()
 			.setSigningKey("JWTSecretKey")
 			.parseClaimsJws(token);
+			System.out.println("valid");
 			
 			return true;
 		}
@@ -48,7 +51,10 @@ public class JwtToken {
 	
 	public String ExtractEmail(String token)
 	{
-		token=token.substring(7);
+		if(token.startsWith("Bearer"))
+		{
+			token=token.substring(7);
+		}
 		
 		
 		Claims claims = Jwts.parser().setSigningKey("JWTSecretKey")

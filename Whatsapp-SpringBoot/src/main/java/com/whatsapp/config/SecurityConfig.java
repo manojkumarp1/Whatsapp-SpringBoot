@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
 import com.whatsapp.repository.UserRepository;
 import com.whatsapp.security.JwtAuthenticationFilter;
 
@@ -32,12 +33,14 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
 	{
+		final String[] match= {"/auth/**","/ws/**"};
 		http
-			.csrf(csrf -> csrf.disable())
-			.authorizeRequests()
-			.requestMatchers("/").permitAll()
-			.anyRequest()
-			.permitAll();
+		.csrf(csrf -> csrf.disable())
+		.authorizeRequests()
+		.requestMatchers(match).permitAll()
+		.anyRequest().
+		authenticated();
+
 			
 		
 		http.addFilterBefore(jwtAuthenticationFilter,UsernamePasswordAuthenticationFilter.class);
